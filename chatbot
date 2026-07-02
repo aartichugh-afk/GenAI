@@ -1,0 +1,36 @@
+# Import the requests library
+# It is used to send HTTP requests from Python to the Ollama server
+import requests
+# Infinite loop to keep the chatbot running
+while True:
+
+    # Take input from the user
+    prompt = input("\nYou: ")
+
+    # Exit condition
+    # If user types 'exit', the chatbot stops
+    if prompt.lower() == "exit":
+        print("Chatbot Closed.")
+        break
+
+    # Send request to Ollama
+    response = requests.post(
+
+        # Ollama API endpoint running on local machine
+        "http://localhost:11434/api/generate",
+
+        # Data sent to the model in JSON format
+        json={
+            "model": "llama3",      # Name of the model
+            "prompt": prompt,       # User question
+            "stream": False         # Return complete response at once
+        }
+    )
+
+    # Convert JSON response into Python dictionary
+    result = response.json()
+    # Extract generated text from response
+    answer = result["response"]
+
+    # Display AI response
+    print("\nAI:", answer)
